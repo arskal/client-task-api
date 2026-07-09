@@ -1,0 +1,40 @@
+services:
+  db:
+    image: postgres:16
+    container_name: task-manager-db
+    restart: always
+    environment:
+      POSTGRES_USER: taskuser
+      POSTGRES_PASSWORD: taskpass
+      POSTGRES_DB: taskmanager
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+
+  api:
+    build: .
+    container_name: task-manager-api
+    restart: always
+    environment:
+      DATABASE_URL: "postgresql://taskuser:taskpass@db:5432/taskmanager"
+      JWT_SECRET: "super-secret-key-change-this-later"
+      PORT: 3000
+    ports:
+      - "3000:3000"
+    depends_on:
+      - db
+
+  web:
+    build:
+      context: .
+      dockerfile: web/Dockerfile
+    container_name: task-manager-web
+    restart: always
+    ports:
+      - "5173:80"
+    depends_on:
+      - api
+
+volumes:
+  pgdata:

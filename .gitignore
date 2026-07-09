@@ -1,0 +1,20 @@
+# Dependencies
+node_modules
+web/node_modules
+
+# Environment secrets - NEVER commit these
+.env
+.env.local
+web/.env
+
+# Build output
+web/dist
+/src/generated/prisma
+
+# Logs
+*.log
+npm-debug.log*
+
+# OS files
+.DS_Store
+Thumbs.db
